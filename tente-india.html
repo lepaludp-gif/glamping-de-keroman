@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Voyage sensoriel aux couleurs de l'Inde. Lit double, décoration raffinée, cocon pour deux à Inzinzac-Lochrist. À partir de 65€/nuit.">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Tente India | Glamping de Keroman – Bretagne Sud">
+    <meta property="og:description" content="Voyage sensoriel aux couleurs de l'Inde. Lit double, décoration raffinée, cocon pour deux à Inzinzac-Lochrist. À partir de 65€/nuit.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://glamping-keroman.fr/tente-india.html">
+    <meta property="og:image" content="https://glamping-keroman.fr/images/india.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="fr_FR">
+    <meta property="og:site_name" content="Glamping de Keroman">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Tente India | Glamping de Keroman – Bretagne Sud">
+    <meta name="twitter:description" content="Voyage sensoriel aux couleurs de l'Inde. Lit double, décoration raffinée, cocon pour deux à Inzinzac-Lochrist. À partir de 65€/nuit.">
+    <meta name="twitter:image" content="https://glamping-keroman.fr/images/india.jpg">
+    <link rel="canonical" href="https://glamping-keroman.fr/tente-india.html">
+    <meta name="description" content="Tente India au Glamping de Keroman : ambiance raffinée, lit king size, décoration indienne. Expérience unique en Bretagne Sud.">
+    <title>Tente India | Glamping de Keroman – Bretagne Sud</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <style>
+        .hero-tent { background-image:linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),url('./images/india.jpg'); background-size:cover; background-position:center; }
+        #lightbox { display:none; position:fixed; top:0;left:0;width:100%;height:100%; background:rgba(0,0,0,0.95); z-index:10000; align-items:center; justify-content:center; }
+        .nav-btn { position:absolute; top:50%; transform:translateY(-50%); font-size:2.5rem; color:white; background:rgba(0,0,0,0.5); width:52px;height:52px; border-radius:50%; display:flex;align-items:center;justify-content:center; cursor:pointer; border:none; }
+        /* === CALENDRIER — CSS entièrement isolé de Tailwind === */
+        #cal-outer * { box-sizing:border-box; font-family:system-ui,sans-serif; }
+        #cal-outer { width:100%; }
+        #cal-card { background:#fff; border-radius:16px; box-shadow:0 2px 16px rgba(0,0,0,0.10); overflow:hidden; }
+        #cal-head { background:#065f46; color:white; display:flex; align-items:center; justify-content:space-between; padding:14px 18px; }
+        #cal-head h3 { margin:0; font-size:1rem; font-weight:700; text-transform:capitalize; }
+        .cnav { background:rgba(255,255,255,0.2); border:none; color:white; width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:1.2rem; display:flex; align-items:center; justify-content:center; transition:background 0.15s; }
+        .cnav:hover { background:rgba(255,255,255,0.35); }
+        #cal-legend { background:#f0fdf4; border-bottom:1px solid #d1fae5; padding:7px 14px; display:flex; flex-wrap:wrap; gap:10px; font-size:0.75rem; color:#555; }
+        #cal-legend span { display:flex; align-items:center; gap:5px; }
+        .ldot { width:11px; height:11px; border-radius:3px; display:inline-block; flex-shrink:0; }
+        #cal-body { padding:10px 12px 14px; }
+        #cal-wdays { display:grid; grid-template-columns:repeat(7,1fr); margin-bottom:4px; }
+        #cal-wdays div { text-align:center; font-size:0.7rem; font-weight:600; color:#9ca3af; padding:3px 0; }
+        #cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:3px; }
+        .cd {
+            width:100%; height:46px;
+            display:flex; flex-direction:column; align-items:center; justify-content:center;
+            border-radius:7px; font-size:0.82rem; cursor:pointer;
+            border:1.5px solid transparent;
+            user-select:none; transition:border-color 0.1s, background 0.1s;
+        }
+        .cd .prc { font-size:0.58rem; font-weight:700; color:#059669; line-height:1; margin-top:1px; }
+        .cd.empty,.cd.past { background:transparent !important; color:#d1d5db !important; cursor:default; border-color:transparent !important; }
+        .cd.past .prc { display:none; }
+        .cd.basse { background:#ffffff; color:#111; border-color:#e5e7eb; }
+        .cd.haute  { background:#fef9ec; color:#111; border-color:#fde68a; }
+        .cd.basse:hover,.cd.haute:hover { border-color:#059669; background:#ecfdf5; }
+        .cd.rsv { background:#f1f5f9 !important; color:#94a3b8 !important; cursor:not-allowed !important; text-decoration:line-through; border-color:transparent !important; }
+        .cd.rsv .prc { display:none; }
+.cd.sA { background:#065f46 !important; color:white !important; border-color:#065f46 !important; font-weight:700; border-radius:7px 0 0 7px !important; }
+        .cd.sA .prc { color:#a7f3d0; }
+        .cd.sB-only { background:linear-gradient(135deg, #065f46 50%, transparent 50%) !important; color:#065f46 !important; border-color:#065f46 !important; font-weight:700; border-radius:0 7px 7px 0 !important; }
+        .cd.sB-only .prc { display:none; }
+        .cd.sA.sB-only { background:#065f46 !important; color:white !important; border-radius:7px !important; }
+        .cd.inr { background:#d1fae5 !important; border-radius:0 !important; border-color:transparent !important; color:#065f46; }
+        .cd.inr .prc { color:#065f46; }
+        #cal-status { text-align:center; font-size:0.75rem; color:#6b7280; padding:6px 0 2px; min-height:20px; }
+        /* Récap */
+        #recap-card { background:#fff; border-radius:16px; box-shadow:0 2px 16px rgba(0,0,0,0.10); padding:24px; }
+        #recap-empty { background:#f9fafb; border-radius:12px; padding:32px 20px; text-align:center; color:#9ca3af; }
+        #recap-empty i { font-size:2.5rem; display:block; margin-bottom:12px; color:#d1d5db; }
+        #recap-box { display:none; }
+        .recap-dates { display:grid; grid-template-columns:1fr 1fr; gap:12px; padding-bottom:14px; border-bottom:1px solid #f3f4f6; margin-bottom:12px; }
+        .recap-dates p { margin:0; }
+        .recap-dates .lbl { font-size:0.7rem; color:#9ca3af; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:3px; }
+        .recap-dates .val { font-weight:600; font-size:0.95rem; }
+        .recap-row { display:flex; justify-content:space-between; font-size:0.85rem; padding:3px 0; color:#555; }
+        .recap-total { display:flex; justify-content:space-between; align-items:center; border-top:1px solid #e5e7eb; margin-top:10px; padding-top:12px; }
+        .recap-total span:first-child { font-weight:700; font-size:1rem; }
+        .recap-total span:last-child { font-weight:700; font-size:1.4rem; color:#065f46; }
+        .supp-wrap { margin:14px 0; }
+        .supp-wrap label { font-size:0.8rem; color:#555; display:block; margin-bottom:5px; }
+        .supp-wrap select { width:100%; padding:10px 12px; border:1px solid #e5e7eb; border-radius:10px; font-size:0.9rem; background:#fff; }
+        .btn-stripe { display:block; background:#065f46; color:white; text-align:center; padding:14px; border-radius:12px; font-weight:600; text-decoration:none; margin-top:14px; transition:background 0.15s; }
+        .btn-stripe:hover { background:#047857; }
+        .btn-reset { background:none; border:none; font-size:0.75rem; color:#9ca3af; cursor:pointer; text-decoration:underline; display:block; width:100%; text-align:center; margin-top:10px; }
+        .alt-contact { text-align:center; font-size:0.8rem; color:#9ca3af; margin-top:10px; }
+        .alt-contact a { color:#059669; }
+    </style>
+</head>
+<body class="bg-stone-50">
+
+<nav class="bg-white shadow-md sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+        <a href="index.html" class="text-emerald-800 font-bold text-lg flex items-center gap-2"><i class="fas fa-arrow-left"></i> Glamping de Keroman</a>
+        <div class="flex gap-6 text-base">
+            <a href="index.html#tentes" class="hover:text-emerald-700">Tentes</a>
+            <a href="contact.html" class="hover:text-emerald-700 font-medium">Contact</a>
+        </div>
+    </div>
+</nav>
+
+<header class="hero-tent h-96 flex items-center justify-center text-white text-center">
+    <div>
+        <h1 class="text-5xl font-bold">Tente India</h1>
+        <p class="text-2xl mt-3">Voyage sensoriel aux couleurs de l'Inde</p>
+    </div>
+</header>
+
+<div class="max-w-6xl mx-auto px-6 py-12">
+
+    <!-- Équipements + Galerie -->
+    <div class="grid md:grid-cols-2 gap-12 mb-12">
+        <div>
+            <h2 class="text-3xl font-semibold mb-4">Ce qui vous attend</h2>
+            <p style="color:#57534e;font-size:0.95rem;line-height:1.6;margin-bottom:16px;padding:14px 16px;background:#f0fdf4;border-left:3px solid #059669;border-radius:0 8px 8px 0">Conçue pour vous deux — un havre d'intimité et de dépaysement aux couleurs de l'Inde. Lit d'appoint possible sur demande pour un enfant ou un troisième invité.</p>
+            <ul style="list-style:none;margin:0;padding:0">
+                                        <li style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f3f4f6"><i class="fas fa-bed" style="color:#059669;font-size:1.1rem;width:20px;text-align:center"></i><span>Lit double confortable</span></li>
+                    <li style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f3f4f6"><i class="fas fa-palette" style="color:#059669;font-size:1.1rem;width:20px;text-align:center"></i><span>Décoration indienne raffinée</span></li>
+                    <li style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f3f4f6"><i class="fas fa-couch" style="color:#059669;font-size:1.1rem;width:20px;text-align:center"></i><span>Mobilier exotique</span></li>
+                    <li style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f3f4f6"><i class="fas fa-mug-hot" style="color:#059669;font-size:1.1rem;width:20px;text-align:center"></i><span>Espace salon cosy</span></li>
+                    <li style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f3f4f6"><i class="fas fa-coffee" style="color:#059669;font-size:1.1rem;width:20px;text-align:center"></i><span>Petit-déjeuner disponible</span></li>
+            </ul>
+        </div>
+        <div>
+            <h2 class="text-3xl font-semibold mb-4">Galerie photos</h2>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                                        <img src="./images/india.jpg" alt="Tente India" class="gimg" style="width:100%;height:130px;object-fit:cover;border-radius:10px;cursor:pointer;transition:opacity 0.2s" onclick="openLB(this)">
+                    <img src="./images/exterieur.jpg" alt="Extérieur" class="gimg" style="width:100%;height:130px;object-fit:cover;border-radius:10px;cursor:pointer;transition:opacity 0.2s" onclick="openLB(this)">
+                    <img src="./images/vue india.jpg" alt="Vue India" class="gimg" style="width:100%;height:130px;object-fit:cover;border-radius:10px;cursor:pointer;transition:opacity 0.2s" onclick="openLB(this)">
+                    <img src="./images/india3.jpg" alt="Intérieur India" class="gimg" style="width:100%;height:130px;object-fit:cover;border-radius:10px;cursor:pointer;transition:opacity 0.2s" onclick="openLB(this)">
+                    <img src="./images/repas et détente.jpg" alt="Repas" class="gimg" style="width:100%;height:130px;object-fit:cover;border-radius:10px;cursor:pointer;transition:opacity 0.2s" onclick="openLB(this)">
+                    <img src="./images/petit dejeuner.jpg" alt="Petit déjeuner" class="gimg" style="width:100%;height:130px;object-fit:cover;border-radius:10px;cursor:pointer;transition:opacity 0.2s" onclick="openLB(this)">
+            </div>
+        </div>
+    </div>
+
+    <!-- Tarifs -->
+    <div class="mb-12">
+        <h2 class="text-3xl font-semibold mb-6">Tarifs</h2>
+        <table class="w-full border-collapse text-left">
+            <thead class="bg-emerald-700 text-white">
+                <tr><th class="p-4">Période</th><th class="p-4">Prix / nuit (2 pers.)</th><th class="p-4">Lit d'appoint</th></tr>
+            </thead>
+            <tbody class="text-base">
+                <tr class="border-b bg-white"><td class="p-4 font-medium">Avril–Mai & Septembre</td><td class="p-4 font-bold">65 €</td><td class="p-4">+15 €/nuit</td></tr>
+                <tr class="border-b bg-stone-50"><td class="p-4 font-medium">Juin & 1–10 Juillet</td><td class="p-4 font-bold">65 €</td><td class="p-4">+15 €/nuit</td></tr>
+                <tr class="bg-amber-50"><td class="p-4 font-medium">11 Juillet – 23 Août <span class="text-sm text-amber-600">(Haute saison)</span></td><td class="p-4 font-bold">75 €</td><td class="p-4">+15 €/nuit</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Calendrier & Réservation -->
+    <h2 class="text-3xl font-semibold mb-2 text-center">Disponibilités & Réservation</h2>
+    <p class="text-center text-stone-500 mb-8">Cliquez sur une nuit pour la réserver, ou sur plusieurs jours pour un séjour plus long</p>
+
+    <div class="grid md:grid-cols-2 gap-8 items-start">
+
+        <!-- Calendrier -->
+        <div id="cal-outer">
+            <div id="cal-card">
+                <div id="cal-head">
+                    <button class="cnav" id="prev">&#8249;</button>
+                    <h3 id="mtitle"></h3>
+                    <button class="cnav" id="next">&#8250;</button>
+                </div>
+                <div id="cal-legend">
+                    <span><span class="ldot" style="background:#fff;border:1px solid #d1d5db"></span> 65 €/nuit</span>
+                    <span><span class="ldot" style="background:#fef9ec;border:1px solid #fde68a"></span> 75 €/nuit (haute saison)</span>
+                    <span><span class="ldot" style="background:#e2e8f0"></span> Réservé</span>
+                </div>
+                <div id="cal-body">
+                    <div id="cal-wdays"><div>Lun</div><div>Mar</div><div>Mer</div><div>Jeu</div><div>Ven</div><div>Sam</div><div>Dim</div></div>
+                    <div id="cal-grid"></div>
+                    <div id="cal-status">Cliquez sur une date pour réserver une nuit</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Récap -->
+        <div id="recap-card">
+            <div id="recap-empty">
+                <i class="fas fa-calendar-alt"></i>
+                <p>Sélectionnez vos dates pour voir le détail et le prix de votre séjour.</p>
+            </div>
+            <div id="recap-box">
+                <div class="recap-dates">
+                    <div><p class="lbl">Arrivée</p><p class="val" id="r-arr"></p></div>
+                    <div><p class="lbl">Départ</p><p class="val" id="r-dep"></p></div>
+                </div>
+                <div id="r-details"></div>
+                <div class="supp-wrap">
+                    <label>Personnes supplémentaires</label>
+                    <select id="supp">
+                        <option value="0">0 — inclus dans le tarif</option>
+                        <option value="1">1 personne (+15 €/nuit)</option>
+                        <option value="2">2 personnes (+30 €/nuit)</option>
+                    </select>
+                </div>
+                <div class="recap-total"><span>Total</span><span id="r-tot"></span></div>
+                <!-- Bouton réservation -->
+                <p style="font-size:0.8rem;color:#6b7280;margin:0 0 10px 0;text-align:center">Sélectionnez vos dates puis cliquez pour réserver :</p>
+                <button onclick="allerReservation()" class="btn-stripe" style="border:none;cursor:pointer;width:100%;font-size:1rem">
+                    <i class="fas fa-calendar-check" style="margin-right:8px"></i>Réserver cette tente
+                </button>
+                <p class="alt-contact" style="margin-top:10px">Ou <a href="contact.html">formulaire de contact</a></p>
+                <button class="btn-reset" id="btn-reset">Effacer la sélection</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Lightbox -->
+<div id="lightbox" onclick="if(event.target===this)closeLB()">
+    <button onclick="prevI()" class="nav-btn" style="left:20px">&#8249;</button>
+    <img id="lb-img" style="max-height:90vh;max-width:90vw;border-radius:12px" alt="">
+    <button onclick="nextI()" class="nav-btn" style="right:20px">&#8250;</button>
+    <button onclick="closeLB()" style="position:absolute;top:20px;right:20px;background:none;border:none;color:white;font-size:2.5rem;cursor:pointer;line-height:1">&times;</button>
+</div>
+
+<footer class="bg-stone-900 text-white py-10 text-center mt-16">
+    <p class="text-xl font-bold">65 € la nuit pour 2 personnes</p>
+    <p class="mt-3">Kéroman, 56650 Inzinzac-Lochrist</p>
+    <a href="contact.html" class="mt-4 inline-block text-emerald-400 hover:text-emerald-300">Nous contacter</a>
+</footer>
+
+<script>
+
+function allerReservation() {
+    if (!sA || !sB) { alert("Veuillez d'abord sélectionner vos dates."); return; }
+    const {tot, nuits, nb, nh} = calcTotal();
+    const url = `reservation.html?tente=India&arrivee=${sA}&depart=${sB}&nuits=${nuits}&total=${tot}&nb=${nb}&nh=${nh}`;
+    window.location.href = url;
+}
+
+async function payerStripe() {
+    if (!sA || !sB) { alert("Veuillez d'abord sélectionner vos dates."); return; }
+
+    // Validation formulaire
+    const prenom = document.getElementById('f-prenom').value.trim();
+    const nom    = document.getElementById('f-nom').value.trim();
+    const email  = document.getElementById('f-email').value.trim();
+    const tel    = document.getElementById('f-tel').value.trim();
+
+    let valid = true;
+    [['f-prenom', prenom], ['f-nom', nom], ['f-email', email], ['f-tel', tel]].forEach(([id, val]) => {
+        const el = document.getElementById(id);
+        if (!val) { el.classList.add('error'); valid = false; }
+        else el.classList.remove('error');
+    });
+    if (!email.includes('@')) { document.getElementById('f-email').classList.add('error'); valid = false; }
+    if (!valid) { return; }
+
+    const btn = document.getElementById('btn-confirmer');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:8px"></i>Redirection en cours...';
+
+    const {tot, nuits} = calcTotal();
+    const fmtDate = s => new Date(s).toLocaleDateString('fr-FR', {day:'numeric', month:'long', year:'numeric'});
+
+    try {
+        const res = await fetch('https://throbbing-moon-2d53.lepaludp.workers.dev/stripe-checkout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                montant: tot,
+                tente: tente,
+                arrivee: fmtDate(sA),
+                depart: fmtDate(sB),
+                nuits: nuits,
+                client: { prenom, nom, email, tel }
+            })
+        });
+        const data = await res.json();
+        if (data.url) {
+            window.location.href = data.url;
+        } else {
+            throw new Error(data.error || 'Erreur inconnue');
+        }
+    } catch(e) {
+        alert('Erreur lors de la redirection vers Stripe : ' + e.message);
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-lock" style="margin-right:8px"></i>Confirmer et payer';
+    }
+}
+
+
+// Lightbox
+let imgs=[],iIdx=0;
+function openLB(img){imgs=Array.from(document.querySelectorAll('.gimg'));iIdx=imgs.indexOf(img);document.getElementById('lb-img').src=img.src;document.getElementById('lightbox').style.display='flex';}
+function closeLB(){document.getElementById('lightbox').style.display='none';}
+function prevI(){iIdx=(iIdx-1+imgs.length)%imgs.length;document.getElementById('lb-img').src=imgs[iIdx].src;}
+function nextI(){iIdx=(iIdx+1)%imgs.length;document.getElementById('lb-img').src=imgs[iIdx].src;}
+document.addEventListener('keydown',e=>{if(document.getElementById('lightbox').style.display==='flex'){if(e.key==='Escape')closeLB();if(e.key==='ArrowLeft')prevI();if(e.key==='ArrowRight')nextI();}});
+
+// Calendrier
+const CAL_ID = "513b365e11821d6a3248b4f529e290ea42111dc8a42493e7180edccf1cd1c41a@group.calendar.google.com";
+const BOOKING_ICAL_URL = "https://ical.booking.com/v1/export?t=b0eebf6e-c479-47ac-95a0-fbf9a451d964";
+let cy,cm,sA=null,sB=null;
+const rsv=new Set();
+
+function prix(iso){const d=new Date(iso),m=d.getMonth()+1,j=d.getDate();if((m===7&&j>=11)||(m===8&&j<=23))return 75;if(m>=4&&m<=9)return 65;return null;}
+function isH(iso){const d=new Date(iso),m=d.getMonth()+1,j=d.getDate();return(m===7&&j>=11)||m===8;}
+function toIso(y,m,d){return `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;}
+function fmt(s){return new Date(s).toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'long'});}
+
+async function loadCal(){
+    const now=new Date(),tmin=encodeURIComponent(now.toISOString()),tmax=encodeURIComponent(new Date(now.getFullYear(),now.getMonth()+8,1).toISOString());
+    let googleOk=false, bookingOk=false;
+
+    try{
+        const url=`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(CAL_ID)}/events?key=AIzaSyBQjoeOHctpySsb7YCryVEvmjm7cVJJs5g&timeMin=${tmin}&timeMax=${tmax}&singleEvents=true&orderBy=startTime`;
+        const res=await fetch(url);
+        if(res.ok){
+            const data=await res.json();
+            (data.items||[]).forEach(ev=>{
+                if(!ev.start)return;
+                const s=new Date(ev.start.date||(ev.start.dateTime||'').split('T')[0]);
+                const e=new Date(ev.end.date||(ev.end.dateTime||'').split('T')[0]);
+                for(let d=new Date(s);d<e;d.setDate(d.getDate()+1))rsv.add(d.toISOString().split('T')[0]);
+            });
+            googleOk=true;
+        }
+    }catch(e){console.warn('Google Calendar:',e.message);}
+
+    if(typeof BOOKING_ICAL_URL !== 'undefined' && BOOKING_ICAL_URL){
+        const proxies = [
+            u => `https://throbbing-moon-2d53.lepaludp.workers.dev/?url=${encodeURIComponent(u)}`,
+            u => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
+            u => `https://corsproxy.io/?${encodeURIComponent(u)}`,
+            u => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`
+        ];
+        for(const buildUrl of proxies){
+            try{
+                const res = await fetch(buildUrl(BOOKING_ICAL_URL));
+                if(res.ok){
+                    const text = await res.text();
+                    if(text.includes('BEGIN:VCALENDAR')){
+                        const before = rsv.size;
+                        parseIcalDates(text).forEach(d => rsv.add(d));
+                        bookingOk = true;
+                        console.log('Booking iCal OK via', buildUrl(BOOKING_ICAL_URL), '- dates ajoutées:', rsv.size - before);
+                        break;
+                    }
+                }
+            }catch(e){console.warn('Proxy échoué:',e.message);}
+        }
+        if(!bookingOk) console.warn('Synchro Booking impossible : tous les proxies ont échoué.');
+    }
+
+    const statusEl = document.getElementById('cal-status');
+    if(statusEl && !bookingOk && typeof BOOKING_ICAL_URL !== 'undefined' && BOOKING_ICAL_URL){
+        statusEl.innerHTML = '<span style="color:#d97706">⚠ Synchro Booking indisponible — contactez-nous pour vérifier les disponibilités</span>';
+    }
+}
+
+function unfoldIcal(text){
+    return text.replace(/\r\n/g,'\n').replace(/\n[ \t]/g,'');
+}
+
+function parseIcalDates(icalText){
+    const dates = new Set();
+    const unfolded = unfoldIcal(icalText);
+    const events = unfolded.split('BEGIN:VEVENT').slice(1);
+    events.forEach(block => {
+        const startMatch = block.match(/DTSTART[^:]*:(\d{8})/);
+        const endMatch   = block.match(/DTEND[^:]*:(\d{8})/);
+        if(!startMatch || !endMatch) return;
+        const parse = s => new Date(`${s.slice(0,4)}-${s.slice(4,6)}-${s.slice(6,8)}`);
+        const start = parse(startMatch[1]);
+        const end   = parse(endMatch[1]);
+        for(let d=new Date(start); d<end; d.setDate(d.getDate()+1)){
+            dates.add(d.toISOString().split('T')[0]);
+        }
+    });
+    return dates;
+}
+
+function render(){
+    const today=new Date();today.setHours(0,0,0,0);
+    const first=new Date(cy,cm,1),last=new Date(cy,cm+1,0),off=(first.getDay()+6)%7;
+    const t=first.toLocaleDateString('fr-FR',{month:'long',year:'numeric'});
+    document.getElementById('mtitle').textContent=t.charAt(0).toUpperCase()+t.slice(1);
+    const grid=document.getElementById('cal-grid');
+    grid.innerHTML='';
+    for(let i=0;i<off;i++){const e=document.createElement('div');e.className='cd empty';grid.appendChild(e);}
+    for(let day=1;day<=last.getDate();day++){
+        const iso=toIso(cy,cm+1,day),date=new Date(cy,cm,day),p=prix(iso);
+        const isPast=date<today,isR=rsv.has(iso),isOpen=p!==null;
+        const el=document.createElement('div');
+        let cls='cd';
+        if(isPast||!isOpen) cls+=' past';
+        else if(isR) cls+=' rsv';
+        else cls+=' '+(isH(iso)?'haute':'basse');
+        // Coloration sélection
+        if(sA&&sB){
+            const d1=new Date(sA),d2=new Date(sB);
+            if(iso===sA) cls+=' sA';
+            else if(iso===sB) cls+=' sB-only';
+            else if(date>d1&&date<d2) cls+=' inr';
+        } else if(sA&&iso===sA) cls+=' sA';
+        el.className=cls;
+        // Contenu
+        if(iso===sB){
+            el.innerHTML=`<span>${day}</span><span style="font-size:0.55rem;color:#065f46;line-height:1;margin-top:1px;font-style:italic">départ</span>`;
+        } else {
+            el.innerHTML=`<span>${day}</span>${(!isPast&&isOpen&&!isR)?`<span class="prc">${p}€</span>`:''}`;
+        }
+        // Cliquabilité : tout sauf past, fermé, réservé, et jour de départ
+        if(!isPast&&isOpen&&!isR&&iso!==sB){
+            el.addEventListener('click',()=>onDay(iso));
+        }
+        grid.appendChild(el);
+    }
+}
+
+function addOneDay(iso){
+    const d=new Date(iso);d.setDate(d.getDate()+1);
+    return d.toISOString().split('T')[0];
+}
+
+// step : 0=rien sélectionné, 1=arrivée choisie (départ provisoire), 2=séjour complet
+let step=0;
+
+function onDay(iso){
+    if(step===0 || step===2){
+        // Nouveau départ : 1er clic = arrivée, départ provisoire = lendemain
+        if(rsv.has(iso)){alert("Cette date est déjà réservée.");return;}
+        sA=iso; sB=addOneDay(iso); step=1;
+        document.getElementById('cal-status').textContent="Arrivée le "+fmt(sA)+" — cliquez sur la date de départ pour prolonger";
+        updateRecap();
+        render();
+    } else {
+        // step===1 : on choisit la date de départ
+        if(iso===sA){
+            // Re-clic sur arrivée = annuler tout
+            sA=null;sB=null;step=0;
+            document.getElementById('recap-empty').style.display='block';
+            document.getElementById('recap-box').style.display='none';
+            document.getElementById('cal-status').textContent="Cliquez sur une date pour réserver";
+            render();return;
+        }
+        // La date cliquée est le départ
+        let newStart = iso<sA ? iso : sA;
+        let newEnd   = iso<sA ? addOneDay(sA) : iso;
+        // Vérifier conflits sur toute la plage
+        const d1=new Date(newStart),d2=new Date(newEnd);
+        let conflict=false;
+        for(let d=new Date(d1);d<d2;d.setDate(d.getDate()+1)){
+            if(rsv.has(d.toISOString().split('T')[0])){conflict=true;break;}
+        }
+        if(conflict){alert("Votre sélection contient des dates déjà réservées.");render();return;}
+        sA=newStart; sB=newEnd; step=2;
+        const nuits=Math.round((new Date(sB)-new Date(sA))/86400000);
+        document.getElementById('cal-status').textContent=`${nuits} nuit${nuits>1?'s':''} — du ${fmt(sA)} au ${fmt(sB)}`;
+        updateRecap();
+        render();
+    }
+}
+
+function calcTotal(){
+    if(!sA||!sB)return{tot:0,nb:0,nh:0,nuits:0};
+    const d1=new Date(sA),d2=new Date(sB),nuits=Math.round((d2-d1)/86400000);
+    const supp=0; // personnes suppl. gérées sur page réservation
+    let tot=0,nb=0,nh=0;
+    for(let i=0;i<nuits;i++){const d=new Date(d1);d.setDate(d.getDate()+i);const iso=d.toISOString().split('T')[0];tot+=prix(iso);if(isH(iso))nh++;else nb++;}
+    tot+=supp*15*nuits;
+    return{tot,nb,nh,nuits};
+}
+
+function updateRecap(){
+    if(!sA||!sB)return;
+    const{tot,nb,nh,nuits}=calcTotal();
+    document.getElementById('r-arr').textContent=fmt(sA);
+    document.getElementById('r-dep').textContent=fmt(sB);
+    let det='';
+    if(nb>0)det+=`<div class="recap-row"><span>${nb} nuit${nb>1?'s':''} × 65 €</span><span>${nb*65} €</span></div>`;
+    if(nh>0)det+=`<div class="recap-row"><span>${nh} nuit${nh>1?'s':''} × 75 € <span style="color:#d97706;font-size:0.78rem">(haute saison)</span></span><span>${nh*75} €</span></div>`;
+    const supp=0; // personnes suppl. gérées sur page réservation
+    if(supp>0)det+=`<div class="recap-row" style="color:#888"><span>${supp} pers. suppl. × ${nuits} nuits × 15 €</span><span>${supp*15*nuits} €</span></div>`;
+    document.getElementById('r-details').innerHTML=det;
+    document.getElementById('r-tot').textContent=tot+' €';
+    document.getElementById('recap-empty').style.display='none';
+    document.getElementById('recap-box').style.display='block';
+}
+
+document.getElementById('supp').addEventListener('change',updateRecap);
+document.getElementById('prev').addEventListener('click',()=>{cm--;if(cm<0){cm=11;cy--;}render();});
+document.getElementById('next').addEventListener('click',()=>{cm++;if(cm>11){cm=0;cy++;}render();});
+document.getElementById('btn-reset').addEventListener('click',()=>{
+    sA=null;sB=null;step=0;
+    document.getElementById('recap-empty').style.display='block';
+    document.getElementById('recap-box').style.display='none';
+    document.getElementById('cal-status').textContent="Cliquez sur une date pour réserver";
+    render();
+});
+
+(async()=>{const now=new Date();cy=now.getFullYear();cm=now.getMonth();await loadCal();render();})();
+</script>
+</body>
+</html>
