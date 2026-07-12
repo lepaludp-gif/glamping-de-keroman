@@ -309,7 +309,7 @@ async function loadCal(){
     let googleOk=false, bookingOk=false;
 
     try{
-        const url=`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(CAL_ID)}/events?key=AIzaSyBQjoeOHctpySsb7YCryVEvmjm7cVJJs5g&timeMin=${tmin}&timeMax=${tmax}&singleEvents=true&orderBy=startTime`;
+        const url=`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(CAL_ID)}/events?key=AIzaSyBHnoOhVmzL6IELxuCwwb-gJC2XaXKvAWM&timeMin=${tmin}&timeMax=${tmax}&singleEvents=true&orderBy=startTime`;
         const res=await fetch(url);
         if(res.ok){
             const data=await res.json();
@@ -461,7 +461,7 @@ function onDay(iso){
 function calcTotal(){
     if(!sA||!sB)return{tot:0,nb:0,nh:0,nuits:0};
     const d1=new Date(sA),d2=new Date(sB),nuits=Math.round((d2-d1)/86400000);
-    const supp=0; // personnes suppl. gérées sur page réservation
+    const supp=parseInt(document.getElementById('supp').value)||0;
     let tot=0,nb=0,nh=0;
     for(let i=0;i<nuits;i++){const d=new Date(d1);d.setDate(d.getDate()+i);const iso=d.toISOString().split('T')[0];tot+=prix(iso);if(isH(iso))nh++;else nb++;}
     tot+=supp*15*nuits;
@@ -476,7 +476,7 @@ function updateRecap(){
     let det='';
     if(nb>0)det+=`<div class="recap-row"><span>${nb} nuit${nb>1?'s':''} × 65 €</span><span>${nb*65} €</span></div>`;
     if(nh>0)det+=`<div class="recap-row"><span>${nh} nuit${nh>1?'s':''} × 75 € <span style="color:#d97706;font-size:0.78rem">(haute saison)</span></span><span>${nh*75} €</span></div>`;
-    const supp=0; // personnes suppl. gérées sur page réservation
+    const supp=parseInt(document.getElementById('supp').value)||0;
     if(supp>0)det+=`<div class="recap-row" style="color:#888"><span>${supp} pers. suppl. × ${nuits} nuits × 15 €</span><span>${supp*15*nuits} €</span></div>`;
     document.getElementById('r-details').innerHTML=det;
     document.getElementById('r-tot').textContent=tot+' €';
