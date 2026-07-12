@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tente Afrique au Glamping de Keroman : safari chic, masques, tissus wax et savane en Bretagne Sud.">
+    <title>Tente Afrique | Glamping de Keroman</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <style>
+        .hero-tent { background-image:linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),url('./images/afrique.jpg'); background-size:cover; background-position:center; }
+        #lightbox { display:none; position:fixed; top:0;left:0;width:100%;height:100%; background:rgba(0,0,0,0.95); z-index:10000; align-items:center; justify-content:center; }
+        .nav-btn { position:absolute; top:50%; transform:translateY(-50%); font-size:2.5rem; color:white; background:rgba(0,0,0,0.5); width:52px;height:52px; border-radius:50%; display:flex;align-items:center;justify-content:center; cursor:pointer; border:none; }
+        /* === CALENDRIER — CSS entièrement isolé de Tailwind === */
+        #cal-outer * { box-sizing:border-box; font-family:system-ui,sans-serif; }
+        #cal-outer { width:100%; }
+        #cal-card { background:#fff; border-radius:16px; box-shadow:0 2px 16px rgba(0,0,0,0.10); overflow:hidden; }
+        #cal-head { background:#065f46; color:white; display:flex; align-items:center; justify-content:space-between; padding:14px 18px; }
+        #cal-head h3 { margin:0; font-size:1rem; font-weight:700; text-transform:capitalize; }
+        .cnav { background:rgba(255,255,255,0.2); border:none; color:white; width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:1.2rem; display:flex; align-items:center; justify-content:center; transition:background 0.15s; }
+        .cnav:hover { background:rgba(255,255,255,0.35); }
+        #cal-legend { background:#f0fdf4; border-bottom:1px solid #d1fae5; padding:7px 14px; display:flex; flex-wrap:wrap; gap:10px; font-size:0.75rem; color:#555; }
+        #cal-legend span { display:flex; align-items:center; gap:5px; }
+        .ldot { width:11px; height:11px; border-radius:3px; display:inline-block; flex-shrink:0; }
+        #cal-body { padding:10px 12px 14px; }
+        #cal-wdays { display:grid; grid-template-columns:repeat(7,1fr); margin-bottom:4px; }
+        #cal-wdays div { text-align:center; font-size:0.7rem; font-weight:600; color:#9ca3af; padding:3px 0; }
+        #cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:3px; }
+        .cd {
+            width:100%; height:46px;
+            display:flex; flex-direction:column; align-items:center; justify-content:center;
+            border-radius:7px; font-size:0.82rem; cursor:pointer;
+            border:1.5px solid transparent;
+            user-select:none; transition:border-color 0.1s, background 0.1s;
+        }
+        .cd .prc { font-size:0.58rem; font-weight:700; color:#059669; line-height:1; margin-top:1px; }
+        .cd.empty,.cd.past { background:transparent !important; color:#d1d5db !important; cursor:default; border-color:transparent !important; }
+        .cd.past .prc { display:none; }
+        .cd.basse { background:#ffffff; color:#111; border-color:#e5e7eb; }
+        .cd.haute  { background:#fef9ec; color:#111; border-color:#fde68a; }
+        .cd.basse:hover,.cd.haute:hover { border-color:#059669; background:#ecfdf5; }
+        .cd.rsv { background:#f1f5f9 !important; color:#94a3b8 !important; cursor:not-allowed !important; text-decoration:line-through; border-color:transparent !important; }
+        .cd.rsv .prc { display:none; }
+        .cd.sA,.cd.sB { background:#065f46 !important; color:white !important; border-color:#065f46 !important; font-weight:700; }
+        .cd.sA .prc,.cd.sB .prc { color:#a7f3d0; }
+        .cd.inr { background:#d1fae5 !important; border-radius:0 !important; border-color:transparent !important; color:#065f46; }
+        .cd.inr .prc { color:#065f46; }
+        .cd.sA { border-radius:7px 0 0 7px !important; }
+        .cd.sB { border-radius:0 7px 7px 0 !important; }
+        .cd.sA.sB { border-radius:7px !important; }
+        #cal-status { text-align:center; font-size:0.75rem; color:#6b7280; padding:6px 0 2px; min-height:20px; }
+        /* Récap */
+        #recap-card { background:#fff; border-radius:16px; box-shadow:0 2px 16px rgba(0,0,0,0.10); padding:24px; }
+        #recap-empty { background:#f9fafb; border-radius:12px; padding:32px 20px; text-align:center; color:#9ca3af; }
+        #recap-empty i { font-size:2.5rem; display:block; margin-bottom:12px; color:#d1d5db; }
+        #recap-box { display:none; }
+        .recap-dates { display:grid; grid-template-columns:1fr 1fr; gap:12px; padding-bottom:14px; border-bottom:1px solid #f3f4f6; margin-bottom:12px; }
+        .recap-dates p { margin:0; }
+        .recap-dates .lbl { font-size:0.7rem; color:#9ca3af; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:3px; }
+        .recap-dates .val { font-weight:600; font-size:0.95rem; }
+        .recap-row { display:flex; justify-content:space-between; font-size:0.85rem; padding:3px 0; color:#555; }
+        .recap-total { display:flex; justify-content:space-between; align-items:center; border-top:1px solid #e5e7eb; margin-top:10px; padding-top:12px; }
+        .recap-total span:first-child { font-weight:700; font-size:1rem; }
+        .recap-total span:last-child { font-weight:700; font-size:1.4rem; color:#065f46; }
+        .supp-wrap { margin:14px 0; }
+        .supp-wrap label { font-size:0.8rem; color:#555; display:block; margin-bottom:5px; }
+        .supp-wrap select { width:100%; padding:10px 12px; border:1px solid #e5e7eb; border-radius:10px; font-size:0.9rem; background:#fff; }
+        .btn-stripe { display:block; background:#065f46; color:white; text-align:center; padding:14px; border-radius:12px; font-weight:600; text-decoration:none; margin-top:14px; transition:background 0.15s; }
+        .btn-stripe:hover { background:#047857; }
+        .btn-paypal { display:block; background:#003087; color:white; text-align:center; padding:14px; border-radius:12px; font-weight:600; text-decoration:none; margin-top:8px; transition:background 0.15s; }
+        .btn-paypal:hover { background:#002266; }
+        .btn-reset { background:none; border:none; font-size:0.75rem; color:#9ca3af; cursor:pointer; text-decoration:underline; display:block; width:100%; text-align:center; margin-top:10px; }
+        .alt-contact { text-align:center; font-size:0.8rem; color:#9ca3af; margin-top:10px; }
+        .alt-contact a { color:#059669; }
+    </style>
+</head>
+<body class="bg-stone-50">
+
+<nav class="bg-white shadow-md sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+        <a href="index.html" class="text-emerald-800 font-bold text-lg flex items-center gap-2"><i class="fas fa-arrow-left"></i> Glamping de Keroman</a>
+        <div class="flex gap-6 text-base">
+            <a href="index.html#tentes" class="hover:text-emerald-700">Tentes</a>
+            <a href="contact.html" class="hover:text-emerald-700 font-medium">Contact</a>
+        </div>
+    </div>
+</nav>
+
+<header class="hero-tent h-96 flex items-center justify-center text-white text-center">
+    <div>
+        <h1 class="text-5xl font-bold">Tente Afrique</h1>
+        <p class="text-2xl mt-3">Safari chic au cœur de la Bretagne</p>
+    </div>
+</header>
+
+<div class="max-w-6xl mx-auto px-6 py-12">
+
+    <!-- Équipements + Galerie -->
+    <div class="grid md:grid-cols-2 gap-12 mb-12">
+        <div>
+            <h2 class="text-3xl font-semibold mb-4">Ce qui vous attend</h2>
+            <ul style="list-style:none;margin:0;padding:0">
+                                        <li style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f3f4f6"><i class="fas fa-globe-africa" style="color:#059669;font-size:1.1rem;width:20px;text-align:center"></i><span>Ambiance safari et savane</span></li>
+                    <li style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f3f4f6"><i class="fas fa-mask" style="color:#059669;font-size:1.1rem;width:20px;text-align:center"></i><span>Masques et tissus wax</span></li>
+                    <li style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f3f4f6"><i class="fas fa-bed" style="color:#059669;font-size:1.1rem;width:20px;text-align:center"></i><span>Lit confortable et cosy</span></li>
+                    <li style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f3f4f6"><i class="fas fa-fire" style="color:#059669;font-size:1.1rem;width:20px;text-align:center"></i><span>Décoration authentique</span></li>
+                    <li style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f3f4f6"><i class="fas fa-coffee" style="color:#059669;font-size:1.1rem;width:20px;text-align:center"></i><span>Petit-déjeuner disponible</span></li>
+            </ul>
+        </div>
+        <div>
+            <h2 class="text-3xl font-semibold mb-4">Galerie photos</h2>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                                        <img src="./images/afrique.jpg" alt="Tente Afrique" class="gimg" style="width:100%;height:130px;object-fit:cover;border-radius:10px;cursor:pointer;transition:opacity 0.2s" onclick="openLB(this)">
+                    <img src="./images/exterieur.jpg" alt="Extérieur" class="gimg" style="width:100%;height:130px;object-fit:cover;border-radius:10px;cursor:pointer;transition:opacity 0.2s" onclick="openLB(this)">
+                    <img src="./images/petit dejeuner.jpg" alt="Petit déjeuner" class="gimg" style="width:100%;height:130px;object-fit:cover;border-radius:10px;cursor:pointer;transition:opacity 0.2s" onclick="openLB(this)">
+                    <img src="./images/le blavet.jpg" alt="Le Blavet" class="gimg" style="width:100%;height:130px;object-fit:cover;border-radius:10px;cursor:pointer;transition:opacity 0.2s" onclick="openLB(this)">
+            </div>
+        </div>
+    </div>
+
+    <!-- Tarifs -->
+    <div class="mb-12">
+        <h2 class="text-3xl font-semibold mb-6">Tarifs</h2>
+        <table class="w-full border-collapse text-left">
+            <thead class="bg-emerald-700 text-white">
+                <tr><th class="p-4">Période</th><th class="p-4">Prix / nuit (2 pers.)</th><th class="p-4">Pers. supplémentaire</th></tr>
+            </thead>
+            <tbody class="text-base">
+                <tr class="border-b bg-white"><td class="p-4 font-medium">Avril–Mai & Septembre</td><td class="p-4 font-bold">65 €</td><td class="p-4">+15 €/nuit</td></tr>
+                <tr class="border-b bg-stone-50"><td class="p-4 font-medium">Juin & 1–10 Juillet</td><td class="p-4 font-bold">65 €</td><td class="p-4">+15 €/nuit</td></tr>
+                <tr class="bg-amber-50"><td class="p-4 font-medium">11 Juillet – 24 Août <span class="text-sm text-amber-600">(Haute saison)</span></td><td class="p-4 font-bold">75 €</td><td class="p-4">+15 €/nuit</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Calendrier & Réservation -->
+    <h2 class="text-3xl font-semibold mb-2 text-center">Disponibilités & Réservation</h2>
+    <p class="text-center text-stone-500 mb-8">Cliquez sur votre date d'arrivée, puis votre date de départ</p>
+
+    <div class="grid md:grid-cols-2 gap-8 items-start">
+
+        <!-- Calendrier -->
+        <div id="cal-outer">
+            <div id="cal-card">
+                <div id="cal-head">
+                    <button class="cnav" id="prev">&#8249;</button>
+                    <h3 id="mtitle"></h3>
+                    <button class="cnav" id="next">&#8250;</button>
+                </div>
+                <div id="cal-legend">
+                    <span><span class="ldot" style="background:#fff;border:1px solid #d1d5db"></span> 65 €/nuit</span>
+                    <span><span class="ldot" style="background:#fef9ec;border:1px solid #fde68a"></span> 75 €/nuit (haute saison)</span>
+                    <span><span class="ldot" style="background:#e2e8f0"></span> Réservé</span>
+                </div>
+                <div id="cal-body">
+                    <div id="cal-wdays"><div>Lun</div><div>Mar</div><div>Mer</div><div>Jeu</div><div>Ven</div><div>Sam</div><div>Dim</div></div>
+                    <div id="cal-grid"></div>
+                    <div id="cal-status">Cliquez sur une date d'arrivée</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Récap -->
+        <div id="recap-card">
+            <div id="recap-empty">
+                <i class="fas fa-calendar-alt"></i>
+                <p>Sélectionnez vos dates pour voir le détail et le prix de votre séjour.</p>
+            </div>
+            <div id="recap-box">
+                <div class="recap-dates">
+                    <div><p class="lbl">Arrivée</p><p class="val" id="r-arr"></p></div>
+                    <div><p class="lbl">Départ</p><p class="val" id="r-dep"></p></div>
+                </div>
+                <div id="r-details"></div>
+                <div class="supp-wrap">
+                    <label>Personnes supplémentaires</label>
+                    <select id="supp">
+                        <option value="0">0 — inclus dans le tarif</option>
+                        <option value="1">1 personne (+15 €/nuit)</option>
+                        <option value="2">2 personnes (+30 €/nuit)</option>
+                    </select>
+                </div>
+                <div class="recap-total"><span>Total</span><span id="r-tot"></span></div>
+                <a href="VOTRE_LIEN_STRIPE" class="btn-stripe"><i class="fas fa-credit-card" style="margin-right:8px"></i>Payer par carte (Stripe)</a>
+                <a href="VOTRE_LIEN_PAYPAL" class="btn-paypal"><i class="fab fa-paypal" style="margin-right:8px"></i>Payer avec PayPal</a>
+                <p class="alt-contact">Ou <a href="contact.html">formulaire de contact</a> · <a href="https://wa.me/33685502442">WhatsApp</a></p>
+                <button class="btn-reset" id="btn-reset">Effacer la sélection</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Lightbox -->
+<div id="lightbox" onclick="if(event.target===this)closeLB()">
+    <button onclick="prevI()" class="nav-btn" style="left:20px">&#8249;</button>
+    <img id="lb-img" style="max-height:90vh;max-width:90vw;border-radius:12px" alt="">
+    <button onclick="nextI()" class="nav-btn" style="right:20px">&#8250;</button>
+    <button onclick="closeLB()" style="position:absolute;top:20px;right:20px;background:none;border:none;color:white;font-size:2.5rem;cursor:pointer;line-height:1">&times;</button>
+</div>
+
+<footer class="bg-stone-900 text-white py-10 text-center mt-16">
+    <p class="text-xl font-bold">65 € la nuit pour 2 personnes</p>
+    <p class="mt-3">Kéroman, 56650 Inzinzac-Lochrist</p>
+    <a href="contact.html" class="mt-4 inline-block text-emerald-400 hover:text-emerald-300">Nous contacter</a>
+</footer>
+
+<script>
+// Lightbox
+let imgs=[],iIdx=0;
+function openLB(img){imgs=Array.from(document.querySelectorAll('.gimg'));iIdx=imgs.indexOf(img);document.getElementById('lb-img').src=img.src;document.getElementById('lightbox').style.display='flex';}
+function closeLB(){document.getElementById('lightbox').style.display='none';}
+function prevI(){iIdx=(iIdx-1+imgs.length)%imgs.length;document.getElementById('lb-img').src=imgs[iIdx].src;}
+function nextI(){iIdx=(iIdx+1)%imgs.length;document.getElementById('lb-img').src=imgs[iIdx].src;}
+document.addEventListener('keydown',e=>{if(document.getElementById('lightbox').style.display==='flex'){if(e.key==='Escape')closeLB();if(e.key==='ArrowLeft')prevI();if(e.key==='ArrowRight')nextI();}});
+
+// Calendrier
+const CAL_ID = "f1822c2e96561db2f27cbca51edeb3ed9f59382e7555fa1b2ecf2033fcd80ae4@group.calendar.google.com";
+let cy,cm,sA=null,sB=null;
+const rsv=new Set();
+
+function prix(iso){const d=new Date(iso),m=d.getMonth()+1,j=d.getDate();if((m===7&&j>=11)||m===8)return 75;if(m>=4&&m<=9)return 65;return null;}
+function isH(iso){const d=new Date(iso),m=d.getMonth()+1,j=d.getDate();return(m===7&&j>=11)||m===8;}
+function toIso(y,m,d){return `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;}
+function fmt(s){return new Date(s).toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'long'});}
+
+async function loadCal(){
+    try{
+        const now=new Date(),tmin=encodeURIComponent(now.toISOString()),tmax=encodeURIComponent(new Date(now.getFullYear(),now.getMonth()+8,1).toISOString());
+        const url=`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(CAL_ID)}/events?key=AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY&timeMin=${tmin}&timeMax=${tmax}&singleEvents=true&orderBy=startTime`;
+        const res=await fetch(url);
+        if(!res.ok)throw new Error('api');
+        const data=await res.json();
+        (data.items||[]).forEach(ev=>{
+            if(!ev.start)return;
+            const s=new Date(ev.start.date||(ev.start.dateTime||'').split('T')[0]);
+            const e=new Date(ev.end.date||(ev.end.dateTime||'').split('T')[0]);
+            for(let d=new Date(s);d<e;d.setDate(d.getDate()+1))rsv.add(d.toISOString().split('T')[0]);
+        });
+    }catch(e){console.warn('Calendar:',e.message);}
+}
+
+function render(){
+    const today=new Date();today.setHours(0,0,0,0);
+    const first=new Date(cy,cm,1),last=new Date(cy,cm+1,0),off=(first.getDay()+6)%7;
+    const t=first.toLocaleDateString('fr-FR',{month:'long',year:'numeric'});
+    document.getElementById('mtitle').textContent=t.charAt(0).toUpperCase()+t.slice(1);
+    const grid=document.getElementById('cal-grid');
+    grid.innerHTML='';
+    for(let i=0;i<off;i++){const e=document.createElement('div');e.className='cd empty';grid.appendChild(e);}
+    for(let day=1;day<=last.getDate();day++){
+        const iso=toIso(cy,cm+1,day),date=new Date(cy,cm,day),p=prix(iso);
+        const isPast=date<today,isR=rsv.has(iso),isOpen=p!==null;
+        const el=document.createElement('div');
+        let cls='cd';
+        if(isPast||!isOpen)cls+=' past';
+        else if(isR)cls+=' rsv';
+        else cls+=' '+(isH(iso)?'haute':'basse');
+        if(sA&&sB){
+            const d1=new Date(sA),d2=new Date(sB);
+            if(iso===sA&&iso===sB)cls+=' sA sB';
+            else if(iso===sA)cls+=' sA';
+            else if(iso===sB)cls+=' sB';
+            else if(date>d1&&date<d2)cls+=' inr';
+        }else if(sA&&iso===sA)cls+=' sA sB';
+        el.className=cls;
+        el.innerHTML=`<span>${day}</span>${(!isPast&&isOpen&&!isR)?`<span class="prc">${p}€</span>`:''}`;
+        if(!isPast&&isOpen&&!isR)el.addEventListener('click',()=>onDay(iso));
+        grid.appendChild(el);
+    }
+}
+
+function onDay(iso){
+    if(!sA||(sA&&sB)){
+        sA=iso;sB=null;
+        document.getElementById('recap-empty').style.display='block';
+        document.getElementById('recap-box').style.display='none';
+        document.getElementById('cal-status').textContent="Maintenant cliquez sur votre date de départ";
+    }else{
+        if(iso<=sA){sA=iso;render();return;}
+        const d1=new Date(sA),d2=new Date(iso);
+        let conflict=false;
+        for(let d=new Date(d1);d<d2;d.setDate(d.getDate()+1)){if(rsv.has(d.toISOString().split('T')[0])){conflict=true;break;}}
+        if(conflict){alert("Votre sélection contient des dates déjà réservées.");sA=null;sB=null;document.getElementById('cal-status').textContent="Cliquez sur une date d'arrivée";render();return;}
+        sB=iso;document.getElementById('cal-status').textContent='';updateRecap();
+    }
+    render();
+}
+
+function calcTotal(){
+    if(!sA||!sB)return{tot:0,nb:0,nh:0,nuits:0};
+    const d1=new Date(sA),d2=new Date(sB),nuits=Math.round((d2-d1)/86400000);
+    const supp=parseInt(document.getElementById('supp').value)||0;
+    let tot=0,nb=0,nh=0;
+    for(let i=0;i<nuits;i++){const d=new Date(d1);d.setDate(d.getDate()+i);const iso=d.toISOString().split('T')[0];tot+=prix(iso);if(isH(iso))nh++;else nb++;}
+    tot+=supp*15*nuits;
+    return{tot,nb,nh,nuits};
+}
+
+function updateRecap(){
+    if(!sA||!sB)return;
+    const{tot,nb,nh,nuits}=calcTotal();
+    document.getElementById('r-arr').textContent=fmt(sA);
+    document.getElementById('r-dep').textContent=fmt(sB);
+    let det='';
+    if(nb>0)det+=`<div class="recap-row"><span>${nb} nuit${nb>1?'s':''} × 65 €</span><span>${nb*65} €</span></div>`;
+    if(nh>0)det+=`<div class="recap-row"><span>${nh} nuit${nh>1?'s':''} × 75 € <span style="color:#d97706;font-size:0.78rem">(haute saison)</span></span><span>${nh*75} €</span></div>`;
+    const supp=parseInt(document.getElementById('supp').value)||0;
+    if(supp>0)det+=`<div class="recap-row" style="color:#888"><span>${supp} pers. suppl. × ${nuits} nuits × 15 €</span><span>${supp*15*nuits} €</span></div>`;
+    document.getElementById('r-details').innerHTML=det;
+    document.getElementById('r-tot').textContent=tot+' €';
+    document.getElementById('recap-empty').style.display='none';
+    document.getElementById('recap-box').style.display='block';
+}
+
+document.getElementById('supp').addEventListener('change',updateRecap);
+document.getElementById('prev').addEventListener('click',()=>{cm--;if(cm<0){cm=11;cy--;}render();});
+document.getElementById('next').addEventListener('click',()=>{cm++;if(cm>11){cm=0;cy++;}render();});
+document.getElementById('btn-reset').addEventListener('click',()=>{
+    sA=null;sB=null;
+    document.getElementById('recap-empty').style.display='block';
+    document.getElementById('recap-box').style.display='none';
+    document.getElementById('cal-status').textContent="Cliquez sur une date d'arrivée";
+    render();
+});
+
+(async()=>{const now=new Date();cy=now.getFullYear();cm=now.getMonth();await loadCal();render();})();
+</script>
+</body>
+</html>
