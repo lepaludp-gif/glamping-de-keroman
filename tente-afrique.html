@@ -227,7 +227,7 @@ function fmt(s){return new Date(s).toLocaleDateString('fr-FR',{weekday:'short',d
 async function loadCal(){
     try{
         const now=new Date(),tmin=encodeURIComponent(now.toISOString()),tmax=encodeURIComponent(new Date(now.getFullYear(),now.getMonth()+8,1).toISOString());
-        const url=`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(CAL_ID)}/events?key=AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY&timeMin=${tmin}&timeMax=${tmax}&singleEvents=true&orderBy=startTime`;
+        const url=`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(CAL_ID)}/events?key=AIzaSyBHnoOhVmzL6IELxuCwwb-gJC2XaXKvAWM&timeMin=${tmin}&timeMax=${tmax}&singleEvents=true&orderBy=startTime`;
         const res=await fetch(url);
         if(!res.ok)throw new Error('api');
         const data=await res.json();
