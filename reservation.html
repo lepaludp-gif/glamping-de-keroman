@@ -95,6 +95,14 @@
 
                 <p style="font-size:0.72rem;color:#9ca3af;margin:8px 0 14px">* Champs obligatoires.</p>
 
+                <!-- Règlement : animaux non admis -->
+                <div style="background:#fef3c7;border-left:3px solid #d97706;border-radius:0 10px 10px 0;padding:12px 14px;margin-bottom:14px">
+                    <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:0.85rem;color:#92400e">
+                        <input type="checkbox" id="f-no-dogs" style="margin-top:3px;flex-shrink:0">
+                        <span><i class="fas fa-paw" style="margin-right:4px"></i><strong>Les animaux ne sont pas admis</strong> sur le camping. Je confirme en avoir pris connaissance. *</span>
+                    </label>
+                </div>
+
                 <!-- Boutons de paiement -->
                 <div id="boutons-paiement">
                     <p style="font-size:0.82rem;font-weight:600;color:#374151;margin-bottom:10px">Choisissez votre mode de paiement :</p>
@@ -198,6 +206,94 @@ function afficherRecap() {
 
 afficherRecap();
 
+// === Vérification de disponibilité en temps réel (sécurité anti double-booking) ===
+// Cette page ne fait plus confiance aux paramètres d'URL : elle revérifie le
+// calendrier Google au chargement, juste avant de permettre le paiement.
+const CAL_IDS = {
+    'india':   '513b365e11821d6a3248b4f529e290ea42111dc8a42493e7180edccf1cd1c41a@group.calendar.google.com',
+    'western': 'fd7fd704d4f3232734d4dfe1e4f1ee8b2a0cd8812bd713d0f860e5a3bef41a8e@group.calendar.google.com',
+    'nature':  '00476d0ce2298dbd7f5ccddfcc84561cce5b806334ec2cf46e70cd2dd1946418@group.calendar.google.com',
+    'savane':  'f1822c2e96561db2f27cbca51edeb3ed9f59382e7555fa1b2ecf2033fcd80ae4@group.calendar.google.com',
+    'bohème':  'be4d40d545dbf7ec4a06d8942f4893f211badfcebf50ff82d9dc3bc2f5089719@group.calendar.google.com',
+    'boheme':  'be4d40d545dbf7ec4a06d8942f4893f211badfcebf50ff82d9dc3bc2f5089719@group.calendar.google.com',
+};
+const GCAL_API_KEY = 'AIzaSyBHnoOhVmzL6IELxuCwwb-gJC2XaXKvAWM';
+let disponibiliteConfirmee = false;
+
+async function verifierDisponibilite() {
+    const boutonsEl = document.getElementById('boutons-paiement');
+    const statusEl = document.createElement('div');
+    statusEl.id = 'dispo-status';
+    statusEl.style.cssText = 'font-size:0.85rem;margin-bottom:12px;padding:10px 14px;border-radius:10px';
+    statusEl.textContent = 'Vérification de la disponibilité en cours...';
+    statusEl.style.background = '#f3f4f6';
+    statusEl.style.color = '#374151';
+    boutonsEl.parentElement.insertBefore(statusEl, boutonsEl);
+    boutonsEl.style.opacity = '0.4';
+    boutonsEl.style.pointerEvents = 'none';
+
+    const calId = CAL_IDS[(tente || '').toLowerCase()];
+    if (!calId || !arrivee || !depart) {
+        statusEl.textContent = '⚠ Impossible de vérifier automatiquement la disponibilité. Contactez-nous avant de payer si vous avez un doute.';
+        statusEl.style.background = '#fef3c7';
+        statusEl.style.color = '#92400e';
+        boutonsEl.style.opacity = '1';
+        boutonsEl.style.pointerEvents = 'auto';
+        disponibiliteConfirmee = true; // on laisse passer plutôt que de bloquer une vraie cliente
+        return;
+    }
+
+    try {
+        const tmin = encodeURIComponent(new Date(arrivee).toISOString());
+        const tmax = encodeURIComponent(new Date(new Date(depart).getTime() + 86400000).toISOString());
+        const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calId)}/events?key=${GCAL_API_KEY}&timeMin=${tmin}&timeMax=${tmax}&singleEvents=true&orderBy=startTime`;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error('Réponse calendrier invalide');
+        const data = await res.json();
+
+        const reserve = new Set();
+        (data.items || []).forEach(ev => {
+            if (!ev.start) return;
+            const s = new Date(ev.start.date || (ev.start.dateTime || '').split('T')[0]);
+            const e = new Date(ev.end.date || (ev.end.dateTime || '').split('T')[0]);
+            for (let d = new Date(s); d < e; d.setDate(d.getDate() + 1)) {
+                reserve.add(d.toISOString().split('T')[0]);
+            }
+        });
+
+        const d1 = new Date(arrivee), d2 = new Date(depart);
+        let conflit = false;
+        for (let d = new Date(d1); d < d2; d.setDate(d.getDate() + 1)) {
+            if (reserve.has(d.toISOString().split('T')[0])) { conflit = true; break; }
+        }
+
+        if (conflit) {
+            statusEl.innerHTML = '⚠ <strong>Ces dates viennent d\'être réservées par quelqu\'un d\'autre.</strong> Merci de choisir d\'autres dates ou de <a href="contact.html" style="text-decoration:underline">nous contacter</a>.';
+            statusEl.style.background = '#fee2e2';
+            statusEl.style.color = '#991b1b';
+            boutonsEl.style.display = 'none';
+        } else {
+            statusEl.textContent = '✓ Dates disponibles, vous pouvez finaliser votre réservation.';
+            statusEl.style.background = '#d1fae5';
+            statusEl.style.color = '#065f46';
+            boutonsEl.style.opacity = '1';
+            boutonsEl.style.pointerEvents = 'auto';
+            disponibiliteConfirmee = true;
+            setTimeout(() => { statusEl.remove(); }, 4000);
+        }
+    } catch (e) {
+        console.warn('Vérification disponibilité impossible:', e.message);
+        statusEl.textContent = '⚠ Vérification automatique indisponible. En cas de doute, contactez-nous avant de payer.';
+        statusEl.style.background = '#fef3c7';
+        statusEl.style.color = '#92400e';
+        boutonsEl.style.opacity = '1';
+        boutonsEl.style.pointerEvents = 'auto';
+        disponibiliteConfirmee = true; // on ne bloque pas une vraie cliente pour un souci technique
+    }
+}
+
+verifierDisponibilite();
+
 // Recalcul du total avec personnes supplémentaires
 function majTotal() {
     const age1 = document.getElementById('f-age-1').value.trim();
@@ -227,6 +323,17 @@ function majTotal() {
 
 // Validation
 function valider(mode) {
+    if (!disponibiliteConfirmee) {
+        alert("Merci de patienter quelques secondes, la vérification de disponibilité est en cours.");
+        return;
+    }
+    const noDogs = document.getElementById('f-no-dogs');
+    if (!noDogs.checked) {
+        noDogs.parentElement.parentElement.style.borderColor = '#dc2626';
+        noDogs.parentElement.parentElement.style.background = '#fee2e2';
+        alert("Merci de confirmer avoir pris connaissance que les animaux ne sont pas admis avant de continuer.");
+        return;
+    }
     const prenom  = document.getElementById('f-prenom').value.trim();
     const nom     = document.getElementById('f-nom').value.trim();
     const email   = document.getElementById('f-email').value.trim();
