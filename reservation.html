@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex">
     <title>Réservation – Glamping de Keroman</title>
+    <link rel="canonical" href="https://glamping-keroman.fr/reservation.html">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="icon" type="image/png" href="favicon.png">
@@ -221,6 +222,59 @@ const CAL_IDS = {
 const GCAL_API_KEY = 'AIzaSyBHnoOhVmzL6IELxuCwwb-gJC2XaXKvAWM';
 let disponibiliteConfirmee = false;
 
+// Liens d'export iCal Booking.com par tente (en plus de Google Calendar).
+// Complétez cette liste au fur et à mesure que vous récupérez les liens
+// depuis l'extranet Booking.com (Synchroniser les calendriers → Exporter).
+const BOOKING_ICAL = {
+    'bohème': 'https://ical.booking.com/v1/export?t=7f3eba23-5059-4e90-8b44-dd11b02bc8b0',
+    'boheme': 'https://ical.booking.com/v1/export?t=7f3eba23-5059-4e90-8b44-dd11b02bc8b0',
+    'nature': 'https://ical.booking.com/v1/export?t=00c55b3f-181f-475f-b069-fba19464b4bf',
+    'western': 'https://ical.booking.com/v1/export?t=2270536d-3ab6-4457-a093-78f4579640a5',
+    'india': 'https://ical.booking.com/v1/export?t=f689c733-ef94-440e-ba04-0baba99533bf',
+    // Bohème et Savane partagent la même page/annonce sur Booking.com, qui ne
+    // fournit qu'un seul flux iCal combiné pour les deux tentes. Par
+    // prudence, ce flux bloque donc les deux tentes en cas de réservation
+    // Booking.com (mieux vaut une vérification manuelle en trop que de rater
+    // un vrai conflit).
+    'savane': 'https://ical.booking.com/v1/export?t=7f3eba23-5059-4e90-8b44-dd11b02bc8b0',
+};
+const ICAL_PROXY = 'https://throbbing-moon-2d53.lepaludp.workers.dev/?url=';
+
+// Parseur .ics minimal : extrait les paires DTSTART/DTEND de chaque VEVENT.
+function parseICSDates(icsText) {
+    const ranges = [];
+    const events = icsText.split('BEGIN:VEVENT').slice(1);
+    events.forEach(ev => {
+        const startMatch = ev.match(/DTSTART[^:]*:(\d{8})/);
+        const endMatch = ev.match(/DTEND[^:]*:(\d{8})/);
+        if (!startMatch || !endMatch) return;
+        const toDate = s => new Date(`${s.slice(0,4)}-${s.slice(4,6)}-${s.slice(6,8)}`);
+        ranges.push({ start: toDate(startMatch[1]), end: toDate(endMatch[1]) });
+    });
+    return ranges;
+}
+
+async function fetchBookingReserved(tenteLower) {
+    const bookingUrl = BOOKING_ICAL[tenteLower];
+    if (!bookingUrl) return new Set();
+    try {
+        const res = await fetch(ICAL_PROXY + encodeURIComponent(bookingUrl));
+        if (!res.ok) throw new Error('Proxy Booking.com invalide');
+        const text = await res.text();
+        const ranges = parseICSDates(text);
+        const reserve = new Set();
+        ranges.forEach(({ start, end }) => {
+            for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
+                reserve.add(d.toISOString().split('T')[0]);
+            }
+        });
+        return reserve;
+    } catch (e) {
+        console.warn('Vérification Booking.com impossible:', e.message);
+        return new Set(); // on ne bloque pas pour un souci technique sur ce flux
+    }
+}
+
 async function verifierDisponibilite() {
     const boutonsEl = document.getElementById('boutons-paiement');
     const statusEl = document.createElement('div');
@@ -245,14 +299,19 @@ async function verifierDisponibilite() {
     }
 
     try {
+        const tenteLower = (tente || '').toLowerCase();
         const tmin = encodeURIComponent(new Date(arrivee).toISOString());
         const tmax = encodeURIComponent(new Date(new Date(depart).getTime() + 86400000).toISOString());
         const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calId)}/events?key=${GCAL_API_KEY}&timeMin=${tmin}&timeMax=${tmax}&singleEvents=true&orderBy=startTime`;
-        const res = await fetch(url);
+
+        const [res, bookingReserve] = await Promise.all([
+            fetch(url),
+            fetchBookingReserved(tenteLower)
+        ]);
         if (!res.ok) throw new Error('Réponse calendrier invalide');
         const data = await res.json();
 
-        const reserve = new Set();
+        const reserve = bookingReserve; // déjà un Set, on y ajoute les dates Google ci-dessous
         (data.items || []).forEach(ev => {
             if (!ev.start) return;
             const s = new Date(ev.start.date || (ev.start.dateTime || '').split('T')[0]);
